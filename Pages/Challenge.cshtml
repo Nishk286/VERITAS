@@ -1,0 +1,582 @@
+﻿@page
+@model VERITAS.Pages.ChallengeModel
+
+@{
+    ViewData["Title"] = "Verification Challenge";
+}
+
+<section class="challenge-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <div class="challenge-hero">
+
+        <span class="section-label">
+            MEDIA VERIFICATION CHALLENGE
+        </span>
+
+        <h1>
+            Test your<br />
+            <span class="hero-accent">verification skills.</span>
+        </h1>
+
+        <p>
+            Analyze a claim, examine the available signals,
+            and decide which conclusion is best supported by
+            the information provided.
+        </p>
+
+    </div>
+
+
+    @if (!Model.Completed)
+    {
+        <!-- =================================================
+             PROGRESS
+             ================================================= -->
+
+        <div class="challenge-progress">
+
+            <div>
+
+                <span>
+                    CHALLENGE
+                </span>
+
+                <strong>
+                    Question @Model.CurrentQuestionNumber
+                    of @Model.TotalQuestions
+                </strong>
+
+            </div>
+
+            <div class="challenge-progress-track">
+
+                <div class="challenge-progress-fill"
+                     style="width:@Model.ProgressPercentage%">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             QUESTION CARD
+             ================================================= -->
+
+        <div class="challenge-card">
+
+            <div class="challenge-card-header">
+
+                <div>
+
+                    <span class="result-card-label">
+                        CASE @Model.CurrentQuestionNumber
+                    </span>
+
+                    <h2>
+                        @Model.CurrentQuestion!.Title
+                    </h2>
+
+                </div>
+
+                <span class="comparison-badge">
+                    @Model.CurrentQuestion.Difficulty
+                </span>
+
+            </div>
+
+
+            <!-- CLAIM -->
+
+            <div class="challenge-claim">
+
+                <span>
+                    CLAIM
+                </span>
+
+                <p>
+                    @Model.CurrentQuestion.Claim
+                </p>
+
+            </div>
+
+
+            <!-- CONTEXT -->
+
+            <div class="challenge-context">
+
+                <span>
+                    AVAILABLE CONTEXT
+                </span>
+
+                <p>
+                    @Model.CurrentQuestion.Context
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 ANSWERS
+                 ================================================= -->
+
+            <form method="post">
+
+                <input type="hidden"
+                       asp-for="CurrentQuestionNumber" />
+
+
+                <div class="challenge-options">
+
+                    <!-- SOURCE -->
+
+                    <div class="challenge-option-group">
+
+                        <span class="challenge-question-number">
+                            01
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                What should you check first?
+                            </strong>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="SourceChoice"
+                                       value="Original source"
+                                       required />
+
+                                <span>
+                                    Identify the original source
+                                </span>
+                            </label>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="SourceChoice"
+                                       value="Comments" />
+
+                                <span>
+                                    Read the comments
+                                </span>
+                            </label>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="SourceChoice"
+                                       value="Headline only" />
+
+                                <span>
+                                    Judge the claim from the headline
+                                </span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EVIDENCE -->
+
+                    <div class="challenge-option-group">
+
+                        <span class="challenge-question-number">
+                            02
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                What evidence is most useful?
+                            </strong>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="EvidenceChoice"
+                                       value="Verifiable evidence"
+                                       required />
+
+                                <span>
+                                    Verifiable evidence
+                                </span>
+                            </label>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="EvidenceChoice"
+                                       value="Number of shares" />
+
+                                <span>
+                                    Number of shares
+                                </span>
+                            </label>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="EvidenceChoice"
+                                       value="Emotional reactions" />
+
+                                <span>
+                                    Emotional reactions
+                                </span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VERDICT -->
+
+                    <div class="challenge-option-group">
+
+                        <span class="challenge-question-number">
+                            03
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                What is the most appropriate verdict?
+                            </strong>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="VerdictChoice"
+                                       value="Verified"
+                                       required />
+
+                                <span>
+                                    Verified
+                                </span>
+                            </label>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="VerdictChoice"
+                                       value="False" />
+
+                                <span>
+                                    False
+                                </span>
+                            </label>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="VerdictChoice"
+                                       value="Misleading" />
+
+                                <span>
+                                    Misleading
+                                </span>
+                            </label>
+
+                            <label>
+                                <input type="radio"
+                                       asp-for="VerdictChoice"
+                                       value="Insufficient Evidence" />
+
+                                <span>
+                                    Insufficient Evidence
+                                </span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="validation-summary">
+                </div>
+
+
+                <button type="submit"
+                        class="primary-button challenge-submit">
+
+                    @(Model.CurrentQuestionNumber <
+                        Model.TotalQuestions
+                        ? "Submit & Continue"
+                        : "Complete Challenge")
+
+                </button>
+
+            </form>
+
+        </div>
+    }
+    else
+    {
+        <!-- =================================================
+             COMPLETION
+             ================================================= -->
+
+        <div class="challenge-result">
+
+            <span class="section-label">
+                CHALLENGE COMPLETE
+            </span>
+
+            <h2>
+                Verification review<br />
+                <span class="hero-accent">complete.</span>
+            </h2>
+
+
+            <!-- SCORE -->
+
+            <div class="challenge-score">
+
+                <span>
+                    YOUR SCORE
+                </span>
+
+                <strong>
+                    @Model.Score / @Model.TotalScore
+                </strong>
+
+            </div>
+
+
+            <!-- FEEDBACK -->
+
+            <div class="challenge-feedback">
+
+                <span>
+                    OVERALL REVIEW
+                </span>
+
+                <p>
+                    @Model.Feedback
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 QUESTION REVIEW
+                 ================================================= -->
+
+            <div class="challenge-review">
+
+                <div class="challenge-review-heading">
+
+                    <span>
+                        DETAILED REVIEW
+                    </span>
+
+                    <h3>
+                        Your verification decisions
+                    </h3>
+
+                </div>
+
+
+                @foreach (var review in Model.ReviewAnswers)
+                {
+                    <article class="challenge-review-card">
+
+                        <div class="challenge-review-card-header">
+
+                            <div>
+
+                                <span class="result-card-label">
+                                    CASE @review.QuestionNumber
+                                </span>
+
+                                <h4>
+                                    @review.Title
+                                </h4>
+
+                            </div>
+
+                            <strong class="challenge-question-score">
+                                @review.Score / @review.MaximumScore
+                            </strong>
+
+                        </div>
+
+
+                        <!-- SOURCE REVIEW -->
+
+                        <div class="review-answer">
+
+                            <span>
+                                SOURCE
+                            </span>
+
+                            <div class="review-answer-row">
+
+                                <strong>
+                                    Your answer
+                                </strong>
+
+                                <span class="@(review.SourceCorrect
+                                                                        ? "review-correct"
+                                                                        : "review-incorrect")">
+
+                                    @review.SourceAnswer
+
+                                </span>
+
+                            </div>
+
+                            @if (!review.SourceCorrect)
+                            {
+                                <div class="review-answer-row">
+
+                                    <strong>
+                                        Correct answer
+                                    </strong>
+
+                                    <span class="review-correct">
+                                        @review.CorrectSourceAnswer
+                                    </span>
+
+                                </div>
+                            }
+
+                        </div>
+
+
+                        <!-- EVIDENCE REVIEW -->
+
+                        <div class="review-answer">
+
+                            <span>
+                                EVIDENCE
+                            </span>
+
+                            <div class="review-answer-row">
+
+                                <strong>
+                                    Your answer
+                                </strong>
+
+                                <span class="@(review.EvidenceCorrect
+                                                                        ? "review-correct"
+                                                                        : "review-incorrect")">
+
+                                    @review.EvidenceAnswer
+
+                                </span>
+
+                            </div>
+
+                            @if (!review.EvidenceCorrect)
+                            {
+                                <div class="review-answer-row">
+
+                                    <strong>
+                                        Correct answer
+                                    </strong>
+
+                                    <span class="review-correct">
+                                        @review.CorrectEvidenceAnswer
+                                    </span>
+
+                                </div>
+                            }
+
+                        </div>
+
+
+                        <!-- VERDICT REVIEW -->
+
+                        <div class="review-answer">
+
+                            <span>
+                                VERDICT
+                            </span>
+
+                            <div class="review-answer-row">
+
+                                <strong>
+                                    Your answer
+                                </strong>
+
+                                <span class="@(review.VerdictCorrect
+                                                                        ? "review-correct"
+                                                                        : "review-incorrect")">
+
+                                    @review.VerdictAnswer
+
+                                </span>
+
+                            </div>
+
+                            @if (!review.VerdictCorrect)
+                            {
+                                <div class="review-answer-row">
+
+                                    <strong>
+                                        Correct answer
+                                    </strong>
+
+                                    <span class="review-correct">
+                                        @review.CorrectVerdictAnswer
+                                    </span>
+
+                                </div>
+                            }
+
+                        </div>
+
+
+                        <!-- EXPLANATION -->
+
+                        <div class="review-explanation">
+
+                            <span>
+                                WHY
+                            </span>
+
+                            <p>
+                                @review.Explanation
+                            </p>
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="challenge-actions">
+
+                <a asp-page="/Challenge"
+                   class="primary-button">
+
+                    Try Again
+
+                </a>
+
+                <a asp-page="/MediaLiteracy"
+                   class="secondary-button">
+
+                    Review Media Literacy
+
+                </a>
+
+            </div>
+
+        </div>
+    }
+
+</section>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

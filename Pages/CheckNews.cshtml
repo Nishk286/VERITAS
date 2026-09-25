@@ -1,0 +1,246 @@
+﻿@page
+@model VERITAS.Pages.CheckNewsModel
+
+@{
+    ViewData["Title"] = "Check News";
+}
+
+<section class="checknews-page">
+
+    <div class="checknews-header">
+
+        <span class="section-label">
+            VERIFICATION ENGINE
+        </span>
+
+        <h1>
+            Check the claim.<br />
+            <span class="hero-accent">Examine the evidence.</span>
+        </h1>
+
+        <p>
+            Submit a news claim or statement and let VERITAS
+            analyze the available evidence before you trust or share it.
+        </p>
+
+    </div>
+
+
+    <div class="checknews-layout">
+
+        <!-- INPUT PANEL -->
+
+        <div class="claim-input-card">
+
+            <div class="card-topline">
+
+                <span class="card-label">
+                    STEP 01
+                </span>
+
+                <span class="card-status">
+                    CLAIM INPUT
+                </span>
+
+            </div>
+
+
+            <form method="post"
+                  asp-page="/Analyze"
+                  class="verification-form">
+
+                <div class="form-field">
+
+                    <label asp-for="Headline">
+                        News headline
+                    </label>
+
+                    <input asp-for="Headline"
+                           placeholder="Enter the headline..."
+                           autocomplete="off" />
+
+                    <span asp-validation-for="Headline"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label asp-for="Claim">
+                        News content or claim
+                        <span class="required-mark">*</span>
+                    </label>
+
+                    <textarea asp-for="Claim"
+                              rows="9"
+                              placeholder="Paste the claim, statement, or news content you want to verify..."></textarea>
+
+                    <span asp-validation-for="Claim"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label asp-for="SourceUrl">
+                        Source URL
+                        <span class="optional-label">OPTIONAL</span>
+                    </label>
+
+                    <input asp-for="SourceUrl"
+                           placeholder="https://example.com/article"
+                           autocomplete="off" />
+
+                    <span asp-validation-for="SourceUrl"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <div class="form-footer">
+
+                    <div class="form-note">
+
+                        <span class="note-icon">
+                            ✓
+                        </span>
+
+                        <span>
+                            Evidence-first analysis
+                        </span>
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="verify-button">
+
+                        <span>
+                            Analyze Claim
+                        </span>
+
+                        <span class="button-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- INFORMATION PANEL -->
+
+        <aside class="verification-info">
+
+            <div class="info-card">
+
+                <span class="info-number">
+                    01
+                </span>
+
+                <div class="info-icon">
+                    C
+                </div>
+
+                <h3>
+                    Identify
+                </h3>
+
+                <p>
+                    Start with the exact statement you want
+                    to examine.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-number">
+                    02
+                </span>
+
+                <div class="info-icon">
+                    E
+                </div>
+
+                <h3>
+                    Examine
+                </h3>
+
+                <p>
+                    VERITAS examines available evidence
+                    and relevant information.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-number">
+                    03
+                </span>
+
+                <div class="info-icon">
+                    V
+                </div>
+
+                <h3>
+                    Verify
+                </h3>
+
+                <p>
+                    Evidence is used to determine whether
+                    the claim is supported, contradicted,
+                    or uncertain.
+                </p>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+
+    <!-- TRUST NOTE -->
+
+    <div class="verification-disclaimer">
+
+        <div class="disclaimer-mark">
+            V
+        </div>
+
+        <div>
+
+            <strong>
+                VERITAS does not treat uncertainty as failure.
+            </strong>
+
+            <p>
+                When reliable evidence is insufficient,
+                the system may return an UNCERTAIN verdict
+                instead of forcing a binary conclusion.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

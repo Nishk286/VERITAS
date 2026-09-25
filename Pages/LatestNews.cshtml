@@ -1,0 +1,214 @@
+﻿@page
+@model VERITAS.Pages.LatestNewsModel
+
+@{
+    ViewData["Title"] = "Latest News";
+}
+
+<section class="latest-news-page">
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="latest-news-hero">
+
+        <div class="latest-news-hero-inner">
+
+            <div class="section-eyebrow">
+                LIVE NEWS FEED
+            </div>
+
+            <h1>
+                Latest News
+            </h1>
+
+            <p>
+                Explore current news coverage from multiple sources
+                through the VERITAS news intelligence layer.
+            </p>
+
+            <div class="latest-news-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    LIVE SOURCE CONNECTION
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         NEWS CONTENT
+         ========================================================= -->
+
+    <section class="latest-news-content">
+
+        @if (Model.HasError)
+        {
+            <div class="latest-news-message error">
+
+                <div class="message-label">
+                    NEWS FEED UNAVAILABLE
+                </div>
+
+                <h2>
+                    Unable to retrieve current articles.
+                </h2>
+
+                <p>
+                    @Model.ErrorMessage
+                </p>
+
+                <a asp-page="/LatestNews"
+                   class="news-action-button">
+                    Try Again
+                </a>
+
+            </div>
+        }
+        else if (Model.Articles.Count == 0)
+        {
+            <div class="latest-news-message">
+
+                <div class="message-label">
+                    NO ARTICLES
+                </div>
+
+                <h2>
+                    No current articles were found.
+                </h2>
+
+                <p>
+                    The live news service did not return any articles
+                    at this time.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <!-- =================================================
+                 FEED HEADER
+                 ================================================= -->
+
+            <div class="latest-news-feed-header">
+
+                <div>
+                    <span class="feed-label">
+                        CURRENT COVERAGE
+                    </span>
+
+                    <h2>
+                        News Intelligence Feed
+                    </h2>
+                </div>
+
+                <div class="article-count">
+                    @Model.Articles.Count
+                    <span>articles</span>
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ARTICLE GRID
+                 ================================================= -->
+
+            <div class="latest-news-grid">
+
+                @foreach (var article in Model.Articles)
+                {
+                    <article class="latest-news-card">
+
+                        <div class="news-card-top">
+
+                            <span class="news-source">
+                                @(string.IsNullOrWhiteSpace(article.Source)
+                                    ? "Unknown source"
+                                    : article.Source)
+                            </span>
+
+                            @if (article.PublishedDate.HasValue)
+                            {
+                                <span class="news-date">
+                                    @article.PublishedDate.Value.ToLocalTime().ToString("dd MMM yyyy, HH:mm")
+                                </span>
+                            }
+
+                        </div>
+
+
+                        <div class="news-card-body">
+
+                            <h3>
+                                @article.Title
+                            </h3>
+
+                            @if (!string.IsNullOrWhiteSpace(article.Content))
+                            {
+                                <p>
+                                    @article.Content
+                                </p>
+                            }
+
+                        </div>
+
+
+                        <div class="news-card-footer">
+
+                            @if (!string.IsNullOrWhiteSpace(article.Url))
+                            {
+                                <a href="@article.Url"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="news-read-link">
+                                    Read Source
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="news-no-source">
+                                    Source unavailable
+                                </span>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+
+
+            <!-- =================================================
+                 VERITAS NOTE
+                 ================================================= -->
+
+            <div class="latest-news-note">
+
+                <div class="note-label">
+                    VERITAS NOTE
+                </div>
+
+                <p>
+                    News coverage provides context and source material.
+                    The presence of an article does not by itself establish
+                    that a claim is true or false. Use the
+                    <strong>Check News</strong> tool to examine a claim
+                    through evidence-based verification.
+                </p>
+
+            </div>
+        }
+
+    </section>
+
+</section>

@@ -1,0 +1,176 @@
+﻿@page
+@model VERITAS.Pages.ContactModel
+
+@{
+    ViewData["Title"] = "Contact VERITAS";
+}
+
+<section class="contact-page">
+
+    <div class="contact-hero">
+
+        <span class="section-label">
+            CONTACT VERITAS
+        </span>
+
+        <h1>
+            Questions,<br />
+            <span class="hero-accent">feedback, ideas.</span>
+        </h1>
+
+        <p>
+            Have feedback about VERITAS, found an issue, or want
+            to suggest an improvement? Send us a message.
+        </p>
+
+    </div>
+
+
+    <div class="contact-layout">
+
+        <div class="contact-information">
+
+            <span class="result-card-label">
+                GET IN TOUCH
+            </span>
+
+            <h2>
+                Help improve the verification experience.
+            </h2>
+
+            <p>
+                Feedback can help identify usability problems,
+                unclear explanations, and areas where the platform
+                could provide better context.
+            </p>
+
+            <div class="contact-note">
+
+                <span>
+                    VERITAS
+                </span>
+
+                <p>
+                    Evidence before influence.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="contact-form-card">
+
+            <form method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="validation-summary">
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Name">
+                        Name
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Your name" />
+
+                    <span asp-validation-for="Name"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Email">
+                        Email
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           placeholder="you@example.com"
+                           type="email" />
+
+                    <span asp-validation-for="Email"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Subject">
+                        Subject
+                    </label>
+
+                    <input asp-for="Subject"
+                           class="form-control"
+                           placeholder="How can we help?" />
+
+                    <span asp-validation-for="Subject"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Message">
+                        Message
+                    </label>
+
+                    <textarea asp-for="Message"
+                              class="form-control contact-textarea"
+                              placeholder="Write your message..."
+                              rows="7"></textarea>
+
+                    <span asp-validation-for="Message"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <button type="submit"
+                        class="primary-button contact-submit">
+
+                    Send Message
+
+                </button>
+
+            </form>
+
+
+            @if (Model.MessageSent)
+            {
+                <div class="contact-success">
+
+                    <span>
+                        MESSAGE RECEIVED
+                    </span>
+
+                    <p>
+                        Thank you for your feedback. Your message
+                        has been received by the VERITAS application.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

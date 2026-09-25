@@ -1,0 +1,228 @@
+﻿@{
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        @ViewData["Title"] - VERITAS
+    </title>
+
+    <meta name="description"
+          content="VERITAS — Evidence-based tools for analyzing claims, examining sources, and developing stronger media literacy." />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+
+        <nav class="navbar">
+
+            <div class="nav-container">
+
+                <!-- Brand -->
+                <a class="brand"
+                   asp-page="/Index">
+
+                    <div class="brand-mark">
+                        V
+                    </div>
+
+                    <div class="brand-text">
+
+                        <span class="brand-name">
+                            VERITAS
+                        </span>
+
+                        <span class="brand-tagline">
+                            Evidence before influence.
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-button"
+                        type="button"
+                        aria-label="Toggle navigation"
+                        aria-expanded="false"
+                        id="mobileMenuButton">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </button>
+
+
+                <!-- Navigation Links -->
+                <div class="nav-links"
+                     id="mainNavigation">
+
+                    <a class="nav-link @(currentPage == "/Index" ? "active" : "")"
+                       asp-page="/Index">
+                        Home
+                    </a>
+
+                    <a class="nav-link @(currentPage == "/CheckNews" ? "active" : "")"
+                       asp-page="/CheckNews">
+                        Check News
+                    </a>
+
+                    <a class="nav-link @(currentPage == "/LatestNews" ? "active" : "")"
+                       asp-page="/LatestNews">
+                        Latest News
+                    </a>
+
+                    <a class="nav-link @(currentPage == "/MediaLiteracy" ? "active" : "")"
+                       asp-page="/MediaLiteracy">
+                        Media Literacy
+                    </a>
+
+                    <a class="nav-link @(currentPage == "/Challenge" ? "active" : "")"
+                       asp-page="/Challenge">
+                        Challenge
+                    </a>
+
+                    <a class="nav-link @(currentPage == "/History" ? "active" : "")"
+                       asp-page="/History">
+                        History
+                    </a>
+
+                    <a class="nav-link @(currentPage == "/About" ? "active" : "")"
+                       asp-page="/About">
+                        About
+                    </a>
+
+                    <a class="nav-link @(currentPage == "/Contact" ? "active" : "")"
+                       asp-page="/Contact">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        @RenderBody()
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <div class="footer-logo">
+                    VERITAS
+                </div>
+
+                <p>
+                    Evidence-based tools for analyzing claims,
+                    examining sources, and developing stronger
+                    media literacy.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <!-- Explore -->
+                <div class="footer-column">
+
+                    <h3>Explore</h3>
+
+                    <a asp-page="/Index">
+                        Home
+                    </a>
+
+                    <a asp-page="/CheckNews">
+                        Check News
+                    </a>
+
+                    <a asp-page="/LatestNews">
+                        Latest News
+                    </a>
+
+                    <a asp-page="/MediaLiteracy">
+                        Media Literacy
+                    </a>
+
+                </div>
+
+
+                <!-- VERITAS -->
+                <div class="footer-column">
+
+                    <h3>VERITAS</h3>
+
+                    <a asp-page="/History">
+                        History
+                    </a>
+
+                    <a asp-page="/About">
+                        About
+                    </a>
+
+                    <a asp-page="/Contact">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © @DateTime.Now.Year VERITAS
+            </span>
+
+            <span>
+                Evidence before influence.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>

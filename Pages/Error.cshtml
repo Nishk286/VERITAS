@@ -1,0 +1,39 @@
+﻿@page
+@model VERITAS.Pages.ErrorModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="error-page">
+
+    <div class="error-content">
+
+        <span class="error-label">
+            VERITAS / SYSTEM
+        </span>
+
+        <h1>
+            Something went wrong.
+        </h1>
+
+        <p>
+            VERITAS could not complete this request.
+            Please try again shortly.
+        </p>
+
+        <a asp-page="/Index" class="error-button">
+            Return to Home
+        </a>
+
+        @if (Model.ShowRequestId)
+        {
+            <div class="error-request">
+                <span>REFERENCE ID</span>
+                <code>@Model.RequestId</code>
+            </div>
+        }
+
+    </div>
+
+</section>

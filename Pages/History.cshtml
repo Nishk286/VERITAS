@@ -1,0 +1,575 @@
+﻿@page
+@model VERITAS.Pages.HistoryModel
+
+@{
+    ViewData["Title"] = "Verification History";
+}
+
+<style>
+    .history-page {
+        min-height: calc(100vh - 80px);
+        padding: 70px 0 90px;
+        background: radial-gradient(circle at 15% 10%, rgba(68, 132, 255, 0.08), transparent 30%), radial-gradient(circle at 85% 20%, rgba(130, 90, 255, 0.06), transparent 30%), #080b10;
+    }
+
+    .history-container {
+        width: min(1400px, calc(100% - 40px));
+        margin: 0 auto;
+    }
+
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 30px;
+        margin-bottom: 35px;
+    }
+
+    .history-kicker {
+        margin-bottom: 10px;
+        color: #79aaff;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+
+    .history-title {
+        margin: 0;
+        color: #f4f7fb;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 700;
+        letter-spacing: -0.035em;
+    }
+
+    .history-subtitle {
+        max-width: 720px;
+        margin: 12px 0 0;
+        color: #8f9aaa;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .history-count {
+        flex-shrink: 0;
+        padding: 10px 15px;
+        border: 1px solid #26303d;
+        border-radius: 10px;
+        background: rgba(17, 23, 32, 0.75);
+        color: #aab5c3;
+        font-size: 0.85rem;
+    }
+
+    .history-card {
+        overflow: hidden;
+        border: 1px solid #242d39;
+        border-radius: 16px;
+        background: rgba(14, 19, 27, 0.92);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .history-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .history-table {
+        width: 100%;
+        min-width: 900px;
+        border-collapse: collapse;
+    }
+
+        .history-table thead {
+            background: #10161f;
+        }
+
+        .history-table th {
+            padding: 18px 22px;
+            border-bottom: 1px solid #27303c;
+            color: #697586;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .history-table td {
+            padding: 25px 22px;
+            border-bottom: 1px solid #202833;
+            color: #aab4c2;
+            vertical-align: middle;
+        }
+
+        .history-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+            .history-table tbody tr:hover {
+                background: rgba(255, 255, 255, 0.025);
+            }
+
+            .history-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+    .claim-cell {
+        max-width: 360px;
+    }
+
+    .claim-text {
+        display: -webkit-box;
+        overflow: hidden;
+        color: #e7ebf1;
+        font-size: 0.96rem;
+        font-weight: 600;
+        line-height: 1.5;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+    }
+
+    .verdict-badge {
+        display: inline-flex;
+        min-width: 96px;
+        justify-content: center;
+        align-items: center;
+        padding: 9px 14px;
+        border: 1px solid;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+    }
+
+    .verdict-true {
+        border-color: rgba(72, 211, 137, 0.45);
+        background: rgba(72, 211, 137, 0.08);
+        color: #63e3a0;
+    }
+
+    .verdict-false {
+        border-color: rgba(255, 77, 103, 0.45);
+        background: rgba(255, 77, 103, 0.08);
+        color: #ff5873;
+    }
+
+    .verdict-uncertain {
+        border-color: rgba(255, 190, 80, 0.45);
+        background: rgba(255, 190, 80, 0.08);
+        color: #ffc766;
+    }
+
+    .verdict-default {
+        border-color: #3a4655;
+        background: rgba(255, 255, 255, 0.035);
+        color: #aeb8c6;
+    }
+
+    .confidence-cell {
+        min-width: 150px;
+    }
+
+    .confidence-value {
+        display: block;
+        margin-bottom: 9px;
+        color: #dce5f2;
+        font-size: 0.92rem;
+        font-weight: 700;
+    }
+
+    .confidence-track {
+        width: 120px;
+        height: 5px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #252d38;
+    }
+
+    .confidence-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: #8993a2;
+    }
+
+    .source-cell {
+        max-width: 210px;
+        color: #8fb9f7 !important;
+        font-size: 0.86rem;
+        line-height: 1.55;
+    }
+
+    .date-cell {
+        min-width: 180px;
+        color: #818c9b !important;
+        font-size: 0.84rem;
+        white-space: nowrap;
+    }
+
+    .history-empty {
+        padding: 80px 30px;
+        text-align: center;
+    }
+
+    .history-empty-icon {
+        display: flex;
+        width: 60px;
+        height: 60px;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 20px;
+        border: 1px solid #293441;
+        border-radius: 14px;
+        background: #111721;
+        color: #7faaf1;
+        font-size: 1.5rem;
+    }
+
+    .history-empty h2 {
+        margin: 0 0 10px;
+        color: #edf2f8;
+        font-size: 1.3rem;
+    }
+
+    .history-empty p {
+        max-width: 500px;
+        margin: 0 auto;
+        color: #7f8997;
+        line-height: 1.7;
+    }
+
+    .history-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding: 20px 22px;
+        border-top: 1px solid #242d39;
+        background: #0d1219;
+    }
+
+    .page-info {
+        color: #7f8997;
+        font-size: 0.84rem;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+    }
+
+    .page-link {
+        display: inline-flex;
+        min-width: 40px;
+        height: 40px;
+        justify-content: center;
+        align-items: center;
+        padding: 0 12px;
+        border: 1px solid #2a3441;
+        border-radius: 9px;
+        background: #121821;
+        color: #aeb9c8;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+        .page-link:hover {
+            border-color: #4b73ad;
+            background: #172131;
+            color: #ffffff;
+        }
+
+        .page-link.active {
+            border-color: #4c82d4;
+            background: #1b3559;
+            color: #ffffff;
+        }
+
+        .page-link.disabled {
+            cursor: not-allowed;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+    .page-dots {
+        padding: 0 4px;
+        color: #687383;
+    }
+
+    @@media (max-width: 768px) {
+        .history-page {
+            padding: 45px 0 60px;
+        }
+
+        .history-container {
+            width: min(100% - 24px, 1400px);
+        }
+
+        .history-header {
+            display: block;
+        }
+
+        .history-count {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .history-footer {
+            display: block;
+        }
+
+        .pagination {
+            margin-top: 16px;
+        }
+    }
+</style>
+
+<section class="history-page">
+    <div class="history-container">
+
+        <!-- Header -->
+        <div class="history-header">
+
+            <div>
+                <div class="history-kicker">
+                    VERITAS Archive
+                </div>
+
+                <h1 class="history-title">
+                    Verification History
+                </h1>
+
+                <p class="history-subtitle">
+                    Review previously analysed claims, their verification
+                    results, confidence levels, evidence sources, and analysis
+                    timestamps.
+                </p>
+            </div>
+
+            <div class="history-count">
+                Page @Model.CurrentPage of @Model.TotalPages
+            </div>
+
+        </div>
+
+
+        <!-- History Card -->
+        <div class="history-card">
+
+            @if (Model.Results != null && Model.Results.Any())
+            {
+                <div class="history-table-wrapper">
+
+                    <table class="history-table">
+
+                        <thead>
+                            <tr>
+                                <th>Claim</th>
+                                <th>Verdict</th>
+                                <th>Confidence</th>
+                                <th>Source</th>
+                                <th>Checked</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var record in Model.Results)
+                            {
+                                var verdict =
+                                    string.IsNullOrWhiteSpace(record.Result)
+                                        ? "UNCERTAIN"
+                                        : record.Result.Trim().ToUpperInvariant();
+
+                                var verdictClass = verdict switch
+                                {
+                                    "TRUE" => "verdict-true",
+                                    "FALSE" => "verdict-false",
+                                    "UNCERTAIN" => "verdict-uncertain",
+                                    _ => "verdict-default"
+                                };
+
+                                var confidence =
+                                    Math.Clamp(record.Confidence, 0, 100);
+
+                                <tr>
+
+                                    <!-- Claim -->
+                                    <td class="claim-cell">
+                                        <span class="claim-text"
+                                              title="@record.Claim">
+                                            @record.Claim
+                                        </span>
+                                    </td>
+
+
+                                    <!-- Verdict -->
+                                    <td>
+                                        <span class="verdict-badge @verdictClass">
+                                            @verdict
+                                        </span>
+                                    </td>
+
+
+                                    <!-- Confidence -->
+                                    <td class="confidence-cell">
+
+                                        <span class="confidence-value">
+                                            @confidence.ToString("0")%
+                                        </span>
+
+                                        <div class="confidence-track">
+                                            <div class="confidence-fill"
+                                                 style="width:@confidence.ToString("0", System.Globalization.CultureInfo.InvariantCulture)%;">
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- Source -->
+                                    <td class="source-cell">
+                                        @if (!string.IsNullOrWhiteSpace(record.Source))
+                                        {
+                                            @record.Source
+                                        }
+                                        else
+                                        {
+                                            <span>Evidence-based analysis</span>
+                                        }
+                                    </td>
+
+
+                                    <!-- Checked Date -->
+                                    <td class="date-cell">
+                                        @($"{record.CheckedDate.ToLocalTime():dd MMM yyyy, HH:mm}")
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <div class="history-footer">
+
+                        <div class="page-info">
+                            Showing page
+                            <strong>@Model.CurrentPage</strong>
+                            of
+                            <strong>@Model.TotalPages</strong>
+                        </div>
+
+                        <nav class="pagination"
+                             aria-label="Verification history pagination">
+
+                            <!-- Previous -->
+                            <a class="page-link @(Model.CurrentPage <= 1 ? "disabled" : "")"
+                               asp-page="/History"
+                               asp-route-page="@(Model.CurrentPage - 1)"
+                               aria-label="Previous page">
+                                ‹
+                            </a>
+
+
+                            <!-- Page Numbers -->
+                            @{
+                                int startPage =
+                                    Math.Max(1, Model.CurrentPage - 2);
+
+                                int endPage =
+                                    Math.Min(Model.TotalPages, Model.CurrentPage + 2);
+                            }
+
+                            @if (startPage > 1)
+                            {
+                                <a class="page-link"
+                                   asp-page="/History"
+                                   asp-route-page="1">
+                                    1
+                                </a>
+
+                                @if (startPage > 2)
+                                {
+                                    <span class="page-dots">...</span>
+                                }
+                            }
+
+
+                            @for (int pageNumber = startPage;
+                                  pageNumber <= endPage;
+                                  pageNumber++)
+                            {
+                                <a class="page-link @(pageNumber == Model.CurrentPage ? "active" : "")"
+                                   asp-page="/History"
+                                   asp-route-page="@pageNumber">
+                                    @pageNumber
+                                </a>
+                            }
+
+
+                            @if (endPage < Model.TotalPages)
+                            {
+                                @if (endPage < Model.TotalPages - 1)
+                                {
+                                    <span class="page-dots">...</span>
+                                }
+
+                                <a class="page-link"
+                                   asp-page="/History"
+                                   asp-route-page="@Model.TotalPages">
+                                    @Model.TotalPages
+                                </a>
+                            }
+
+
+                            <!-- Next -->
+                            <a class="page-link @(Model.CurrentPage >= Model.TotalPages ? "disabled" : "")"
+                               asp-page="/History"
+                               asp-route-page="@(Model.CurrentPage + 1)"
+                               aria-label="Next page">
+                                ›
+                            </a>
+
+                        </nav>
+
+                    </div>
+                }
+
+            }
+            else
+            {
+                <!-- Empty State -->
+                <div class="history-empty">
+
+                    <div class="history-empty-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        No verification history yet
+                    </h2>
+
+                    <p>
+                        Once you analyse a claim through VERITAS,
+                        the verification result will appear here.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+</section>

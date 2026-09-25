@@ -1,0 +1,974 @@
+﻿@page
+@model VERITAS.Pages.AnalyzeModel
+
+@{
+    ViewData["Title"] = "Analysis";
+}
+
+<section class="analysis-page">
+
+    @if (Model.Result == null)
+    {
+        <div class="analysis-empty">
+
+            <span class="section-label">
+                VERIFICATION ENGINE
+            </span>
+
+            <h1>
+                Ready to<br />
+                <span class="hero-accent">analyze.</span>
+            </h1>
+
+            <p>
+                Submit a claim from the Check News page to begin
+                evidence-based analysis.
+            </p>
+
+            <a asp-page="/CheckNews"
+               class="primary-button">
+                Check a Claim
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <!-- =====================================================
+             ANALYSIS HEADER
+             ===================================================== -->
+
+        <div class="analysis-header">
+
+            <div>
+
+                <span class="section-label">
+                    VERIFICATION RESULT
+                </span>
+
+                <h1>
+                    Analysis<br />
+                    <span class="hero-accent">complete.</span>
+                </h1>
+
+                <p>
+                    VERITAS has completed a preliminary
+                    evidence-based analysis of the submitted claim.
+                </p>
+
+            </div>
+
+            <div class="analysis-status">
+                <span class="status-dot"></span>
+                ANALYSIS COMPLETE
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             FINAL VERDICT
+             ===================================================== -->
+
+        <div class="verdict-card">
+
+            <div class="verdict-card-header">
+
+                <div>
+
+                    <span class="result-label">
+                        FINAL VERDICT
+                    </span>
+
+                    <div class="verdict-value
+                        @Model.Result.Verdict.ToLowerInvariant()">
+
+                        @Model.Result.Verdict
+
+                    </div>
+
+                </div>
+
+                <div class="confidence-block">
+
+                    <span>
+                        CONFIDENCE
+                    </span>
+
+                    <strong>
+                        @Model.Result.Confidence%
+                    </strong>
+
+                    <small class="confidence-context">
+                        Combined verification signal
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div class="confidence-track">
+
+                <div class="confidence-fill"
+                     style="width:@Model.Result.Confidence%">
+                </div>
+
+            </div>
+
+            <div class="confidence-scale">
+                <span>LOW</span>
+                <span>MODERATE</span>
+                <span>HIGH</span>
+            </div>
+
+            <p class="verdict-description">
+                @Model.Result.VerdictDescription
+            </p>
+
+            <div class="verdict-method">
+
+                <span>
+                    VERIFICATION STATUS
+                </span>
+
+                <strong>
+                    @Model.Result.EvidenceStatus
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             CLAIM
+             ===================================================== -->
+
+        <div class="analysis-section">
+
+            <div class="analysis-section-heading">
+
+                <span>
+                    01
+                </span>
+
+                <div>
+
+                    <small>
+                        SUBMITTED CONTENT
+                    </small>
+
+                    <h2>
+                        The claim
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <div class="claim-display">
+
+                <div class="claim-mark">
+                    “
+                </div>
+
+                <p>
+                    @Model.Result.Claim
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ANALYSIS + EVIDENCE
+             ===================================================== -->
+
+        <div class="result-grid">
+
+            <article class="result-card">
+
+                <div class="result-card-number">
+                    02
+                </div>
+
+                <span class="result-card-label">
+                    ANALYSIS
+                </span>
+
+                <h3>
+                    What VERITAS found
+                </h3>
+
+                <p>
+                    @Model.Result.Explanation
+                </p>
+
+            </article>
+
+
+            <article class="result-card">
+
+                <div class="result-card-number">
+                    03
+                </div>
+
+                <span class="result-card-label">
+                    EVIDENCE STATUS
+                </span>
+
+                <h3>
+                    @Model.Result.EvidenceStatus
+                </h3>
+
+                <p>
+                    @Model.Result.Evidence
+                </p>
+
+                @if (Model.Result.RelatedArticleCount > 0)
+                {
+                    <div class="evidence-metrics">
+
+                        <div>
+
+                            <strong>
+                                @Model.Result.RelatedArticleCount
+                            </strong>
+
+                            <span>
+                                Related reports
+                            </span>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                @Model.Result.DistinctSourceCount
+                            </strong>
+
+                            <span>
+                                Distinct sources
+                            </span>
+
+                        </div>
+
+                    </div>
+                }
+
+            </article>
+
+        </div>
+
+
+        <!-- =====================================================
+             EVIDENCE SOURCE + METHOD
+             ===================================================== -->
+
+        <div class="result-grid">
+
+            <article class="result-card">
+
+                <div class="result-card-number">
+                    04
+                </div>
+
+                <span class="result-card-label">
+                    EVIDENCE SOURCE
+                </span>
+
+                <h3>
+                    Evidence source
+                </h3>
+
+                <p>
+                    @Model.Result.Source
+                </p>
+
+            </article>
+
+
+            <article class="result-card">
+
+                <div class="result-card-number">
+                    05
+                </div>
+
+                <span class="result-card-label">
+                    VERIFICATION METHOD
+                </span>
+
+                <h3>
+                    How this result was reached
+                </h3>
+
+                <p>
+                    @Model.Result.VerificationMethod
+                </p>
+
+            </article>
+
+        </div>
+
+
+        <!-- =====================================================
+             ML STATUS
+             ===================================================== -->
+        @if (Model.MLResult != null)
+        {
+            <div class="analysis-section">
+
+                <div class="analysis-section-heading">
+
+                    <span>
+                        06
+                    </span>
+
+                    <div>
+
+                        <small>
+                            MACHINE LEARNING
+                        </small>
+
+                        <h2>
+                            ML classification status
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ml-status-card">
+
+                    <div class="ml-status-header">
+
+                        <div>
+
+                            <span class="result-card-label">
+                                MODEL STATUS
+                            </span>
+
+                            <h3>
+                                @(Model.MLResult.IsAvailable
+                                    ? "Machine-learning model active"
+                                    : "Machine-learning model not connected")
+                            </h3>
+
+                        </div>
+
+                        <span class="ml-status-badge
+                            @(Model.MLResult.IsAvailable
+                                ? "active"
+                                : "inactive")">
+
+                            @(Model.MLResult.IsAvailable
+                                ? "ACTIVE"
+                                : "NOT CONNECTED")
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="ml-status-grid">
+
+                        <div class="ml-status-item">
+
+                            <span>
+                                MODEL
+                            </span>
+
+                            <strong>
+                                @Model.MLResult.ModelName
+                            </strong>
+
+                        </div>
+
+
+                        <div class="ml-status-item">
+
+                            <span>
+                                PREDICTION
+                            </span>
+
+                            <strong>
+                                @Model.MLResult.Label
+                            </strong>
+
+                        </div>
+
+
+                        <div class="ml-status-item">
+
+                            <span>
+                                CONFIDENCE
+                            </span>
+
+                            <strong>
+                                @Model.MLResult.Confidence%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ml-status-explanation">
+
+                        <span>
+                            STATUS INFORMATION
+                        </span>
+
+                        <p>
+                            @Model.MLResult.Explanation
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-note">
+
+                        <span class="comparison-note-icon">
+                            i
+                        </span>
+
+                        <p>
+                            The machine-learning layer is currently
+                            an extension point for a future trained
+                            model. The current VERITAS verdict is
+                            therefore based on its evidence and
+                            verification pipeline rather than a
+                            claimed ML prediction.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+
+        <!-- =====================================================
+             CLAIM COMPARISON
+             ===================================================== -->
+        @if (Model.Comparison != null)
+        {
+            <div class="analysis-section">
+
+                <div class="analysis-section-heading">
+
+                    <span>
+                        07
+                    </span>
+
+                    <div>
+
+                        <small>
+                            CLAIM COMPARISON
+                        </small>
+
+                        <h2>
+                            Evidence signals
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="comparison-card">
+
+                    <div class="comparison-intro">
+
+                        <div>
+
+                            <span class="result-card-label">
+                                CONTEXTUAL ANALYSIS
+                            </span>
+
+                            <h3>
+                                Claim ↔ retrieved reporting
+                            </h3>
+
+                        </div>
+
+                        <span class="comparison-badge">
+                            SIGNALS
+                        </span>
+
+                    </div>
+
+
+                    <div class="comparison-metrics">
+
+                        <div class="comparison-metric">
+
+                            <span class="comparison-metric-label">
+                                SUPPORTING
+                            </span>
+
+                            <strong>
+                                @Model.Comparison.SupportingSignals
+                            </strong>
+
+                            <small>
+                                relevant article signals
+                            </small>
+
+                        </div>
+
+
+                        <div class="comparison-metric">
+
+                            <span class="comparison-metric-label">
+                                NEUTRAL
+                            </span>
+
+                            <strong>
+                                @Model.Comparison.NeutralSignals
+                            </strong>
+
+                            <small>
+                                contextual articles
+                            </small>
+
+                        </div>
+
+
+                        <div class="comparison-metric">
+
+                            <span class="comparison-metric-label">
+                                CONTRADICTING
+                            </span>
+
+                            <strong>
+                                @Model.Comparison.ContradictingSignals
+                            </strong>
+
+                            <small>
+                                contradiction signals
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="comparison-summary">
+
+                        <span class="comparison-summary-label">
+                            COMPARISON SUMMARY
+                        </span>
+
+                        <p>
+                            @Model.Comparison.Summary
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-method">
+
+                        <span>
+                            METHOD
+                        </span>
+
+                        <p>
+                            @Model.Comparison.Method
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-note">
+
+                        <span class="comparison-note-icon">
+                            i
+                        </span>
+
+                        <p>
+                            Article similarity is treated as
+                            contextual evidence only. The presence
+                            of related reporting does not by itself
+                            prove that a claim is true or false.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+
+        <!-- =====================================================
+             SOURCE TRANSPARENCY
+             ===================================================== -->
+        @if (Model.SourceAnalysis != null &&
+                     Model.SourceAnalysis.ArticleCount > 0)
+        {
+            <div class="analysis-section">
+
+                <div class="analysis-section-heading">
+
+                    <span>
+                        08
+                    </span>
+
+                    <div>
+
+                        <small>
+                            SOURCE TRANSPARENCY
+                        </small>
+
+                        <h2>
+                            Retrieved sources
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="source-analysis-card">
+
+                    <div class="source-analysis-header">
+
+                        <div>
+
+                            <span class="result-card-label">
+                                SOURCE OVERVIEW
+                            </span>
+
+                            <h3>
+                                Where the context came from
+                            </h3>
+
+                        </div>
+
+                        <span class="comparison-badge">
+                            METADATA
+                        </span>
+
+                    </div>
+
+
+                    <div class="source-metrics">
+
+                        <div class="source-metric">
+
+                            <span>
+                                ARTICLES
+                            </span>
+
+                            <strong>
+                                @Model.SourceAnalysis.ArticleCount
+                            </strong>
+
+                        </div>
+
+
+                        <div class="source-metric">
+
+                            <span>
+                                DISTINCT SOURCES
+                            </span>
+
+                            <strong>
+                                @Model.SourceAnalysis.DistinctSourceCount
+                            </strong>
+
+                        </div>
+
+
+                        <div class="source-metric">
+
+                            <span>
+                                WITH URL
+                            </span>
+
+                            <strong>
+                                @Model.SourceAnalysis.SourcesWithUrl
+                            </strong>
+
+                        </div>
+
+
+                        <div class="source-metric">
+
+                            <span>
+                                HTTPS
+                            </span>
+
+                            <strong>
+                                @Model.SourceAnalysis.SecureSourceCount
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    @if (Model.SourceAnalysis.SourceNames.Any())
+                    {
+                        <div class="source-list">
+
+                            <span class="source-list-label">
+                                SOURCES IDENTIFIED
+                            </span>
+
+                            <div class="source-tags">
+
+                                @foreach (var sourceName
+                                    in Model.SourceAnalysis.SourceNames)
+                                {
+                                    <span class="source-tag">
+                                        @sourceName
+                                    </span>
+                                }
+
+                            </div>
+
+                        </div>
+                    }
+
+
+                    <div class="source-summary">
+
+                        <p>
+                            @Model.SourceAnalysis.Summary
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-note">
+
+                        <span class="comparison-note-icon">
+                            i
+                        </span>
+
+                        <p>
+                            Source metadata describes where
+                            retrieved reporting came from. It does
+                            not independently establish whether a
+                            source or claim is accurate.
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-method">
+
+                        <span>
+                            METHOD
+                        </span>
+
+                        <p>
+                            @Model.SourceAnalysis.Method
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+
+        <!-- =====================================================
+             USER-SUBMITTED SOURCE
+             ===================================================== -->
+        @if (!string.IsNullOrWhiteSpace(Model.SourceUrl))
+        {
+            <div class="analysis-section">
+
+                <div class="analysis-section-heading">
+
+                    <span>
+                        09
+                    </span>
+
+                    <div>
+
+                        <small>
+                            USER-SUBMITTED SOURCE
+                        </small>
+
+                        <h2>
+                            Original source
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="claim-display">
+
+                    <div class="claim-mark">
+                        ↗
+                    </div>
+
+                    <div>
+
+                        <p>
+                            The following source was submitted
+                            with this claim. VERITAS does not treat
+                            the submitted source alone as proof
+                            of the claim.
+                        </p>
+
+                        <a href="@Model.SourceUrl"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="secondary-button">
+
+                            Open submitted source
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+
+        <!-- =====================================================
+             RELATED NEWS
+             ===================================================== -->
+        @if (Model.RelatedNews.Any())
+        {
+            <div class="analysis-section">
+
+                <div class="analysis-section-heading">
+
+                    <span>
+                        10
+                    </span>
+
+                    <div>
+
+                        <small>
+                            LIVE NEWS CONTEXT
+                        </small>
+
+                        <h2>
+                            Related reporting
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="result-grid">
+
+                    @foreach (var article in Model.RelatedNews)
+                    {
+                        <article class="result-card">
+
+                            <span class="result-card-label">
+                                @article.Source
+                            </span>
+
+                            <h3>
+                                @article.Title
+                            </h3>
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                article.Content))
+                            {
+                                <p>
+                                    @article.Content
+                                </p>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                article.Url))
+                            {
+                                <a href="@article.Url"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="secondary-button">
+
+                                    Read source
+
+                                </a>
+                            }
+
+                        </article>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+
+        <!-- =====================================================
+             ANALYSIS FOOTER
+             ===================================================== -->
+
+        <div class="analysis-footer">
+
+            <div>
+
+                <span class="section-label">
+                    ANALYSIS RECORD
+                </span>
+
+                <p>
+                    Analyzed on
+                    @(Model.Result.AnalyzedAt
+                        .ToLocalTime()
+                        .ToString("dd MMM yyyy, HH:mm"))
+                </p>
+
+            </div>
+
+            <a asp-page="/CheckNews"
+               class="secondary-button">
+
+                Analyze Another Claim
+
+            </a>
+
+        </div>
+
+
+        <!-- =====================================================
+             IMPORTANT NOTE
+             ===================================================== -->
+
+        <div class="analysis-note">
+
+            <span>
+                i
+            </span>
+
+            <div>
+
+                <strong>
+                    Important verification note
+                </strong>
+
+                <p>
+                    This result is preliminary machine-generated
+                    analysis. Retrieved news articles provide
+                    contextual evidence and should not be treated
+                    as absolute proof.
+                </p>
+
+            </div>
+
+        </div>
+
+    }
+
+</section>
